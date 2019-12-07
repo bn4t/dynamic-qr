@@ -1,0 +1,101 @@
+* {
+    font-family: "Roboto", serif;
+}
+
+
+@media only screen and (min-width: 1000px) {
+    .container {
+        max-width: 950px;
+        margin: auto;
+    }
+}
+
+.text-centered {
+    text-align: center;
+}
+
+.title {
+    font-size: 45px;
+}
+
+.subtitle {
+    font-style: italic;
+    font-size: 18px;
+}
+
+.noscript {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #1b1e21;
+    background-color: #1e7e34;
+    padding: 5px;
+    color: white;
+}
+
+
+.box-important {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #1b1e21;
+    background-color: lightcoral;
+    padding: 5px;
+    color: white;
+}
+
+.create-qr-form {
+    margin: 60px auto 0px;
+    width: 300px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgb(206, 212, 218);
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+input[type="email"], input[type="password"], input[type="tel"], input[type="text"], input[type="url"], textarea.form-control {
+    border-radius: 0;
+    border-color: #888;
+    color: #343a40;
+    padding: .25rem .375rem;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .25rem;
+}
+
+button[type=submit] {
+    border-radius: 0;
+    border-width: 1px;
+    border-color: #004085aa;
+    padding: .25rem .375rem;
+    background-color: #005cbf;
+    color: #fff;
+}
+
+
+/*
+* Fonts
+*/
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/roboto-v20-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local('Roboto'), local('Roboto-Regular'),
+    url('../fonts/roboto-v20-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/roboto-v20-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */ url('../fonts/roboto-v20-latin-regular.woff') format('woff'), /* Modern Browsers */ url('../fonts/roboto-v20-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */ url('../fonts/roboto-v20-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}

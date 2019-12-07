@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Generate a dynamic QR code with a changeable URL. No login required.">
+    <title>DynQR</title>
+
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+
+<!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <h1 class="text-centered title">DynQR</h1>
+        <noscript><p class="text-centered noscript">This site works best with javascript disabled. Actually, it doesn't
+                use javascript at all.</p></noscript>
+        <p class="subtitle text-centered">Generate a dynamic QR code with a changeable URL. No login required.</p>
+
+        <div class="create-qr-form">
+            <form action="/create-qr" method="post">
+                <div class="form-group">
+                    <label for="target">Target URL</label>
+                    <input type="url" id="target" name="target" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+
+</html>
