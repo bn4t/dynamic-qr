@@ -94,6 +94,7 @@ button[type=submit] {
 @font-face {
     font-family: 'Roboto';
     font-style: normal;
+    font-display: block;
     font-weight: 400;
     src: url('../fonts/roboto-v20-latin-regular.eot'); /* IE9 Compat Modes */
     src: local('Roboto'), local('Roboto-Regular'),
