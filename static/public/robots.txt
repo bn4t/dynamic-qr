@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /manage/
+Disallow: /link/
+Disallow: /create-qr
+Disallow: /update-qr
