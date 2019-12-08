@@ -21,6 +21,7 @@ type managementData struct {
 	Link     string
 }
 
+// create a new dynamic QR code
 func handleCreateQr(c echo.Context) error {
 	target := c.FormValue("target")
 
@@ -50,6 +51,7 @@ func handleCreateQr(c echo.Context) error {
 	return c.Redirect(303, "/manage/"+password)
 }
 
+// update an existing QR code
 func handleUpdateQr(c echo.Context) error {
 	target := c.FormValue("target")
 	password := c.FormValue("password")
@@ -94,6 +96,7 @@ func handleUpdateQr(c echo.Context) error {
 	return c.Redirect(303, "/manage/"+password)
 }
 
+// return the manage page for a QR code
 func handleManage(c echo.Context) error {
 	password := c.Param("password")
 
@@ -109,7 +112,7 @@ func handleManage(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "Invalid management link.")
 	}
 
-	link := utils.Getenv("BASE_URL", "") + "link/" + strconv.Itoa(managementData.Id)
+	link := utils.GetEnv("BASE_URL", "") + "link/" + strconv.Itoa(managementData.Id)
 	managementData.Link = link
 
 	// create QR code and encode it as base64
@@ -123,6 +126,7 @@ func handleManage(c echo.Context) error {
 	return c.Render(http.StatusOK, "manage", managementData)
 }
 
+// handle link redirects
 func handleLink(c echo.Context) error {
 	id := c.Param("id")
 

@@ -6,7 +6,7 @@ import (
 )
 
 // get an environment variable and use the fallback if it is undefined
-func Getenv(key, fallback string) string {
+func GetEnv(key, fallback string) string {
 	value := os.Getenv(key)
 	if len(value) == 0 {
 		return fallback
@@ -14,6 +14,7 @@ func Getenv(key, fallback string) string {
 	return value
 }
 
+// get the current execution dir
 func GetExecutionDir() (string, error) {
 	ex, err := os.Executable()
 	if err != nil {
