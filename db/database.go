@@ -5,6 +5,7 @@ import (
 	"git.bn4t.me/bn4t/dynamic-qr/app/utils"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
+	"os"
 )
 
 var Db *sql.DB
@@ -17,7 +18,15 @@ func Connect() {
 		log.Fatal(err)
 	}
 
-	Db, err = sql.Open("sqlite3", execDir+"/dynqr.db")
+	// check if data directory exists and create it if not
+	if !utils.DirExists(execDir + "/data") {
+		err := os.Mkdir(execDir+"/data", 644)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	Db, err = sql.Open("sqlite3", execDir+"/data/dynqr.db")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

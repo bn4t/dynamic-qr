@@ -12,11 +12,9 @@ RUN go get && go build -o /out/dynqr
 
 FROM alpine:latest
 
-RUN mkdir /app /data && addgroup -S dynqr && adduser -S dynqr -G dynqr && apk add --no-cache ca-certificates
+RUN mkdir /app /app/data && addgroup -S dynqr && adduser -S dynqr -G dynqr && apk add --no-cache ca-certificates sudo
 COPY --from=builder --chown=dynqr:dynqr /out/dynqr /app/dynqr
 COPY --chown=dynqr:dynqr static/ /app/static
-RUN chown -R dynqr:dynqr /app/ /data/ && chmod -R 774 /app/ /data/
-USER dynqr
 
-ENTRYPOINT /app/dynqr
+ENTRYPOINT chown -R dynqr:dynqr /app/&& chmod -R 775 /app/  && sudo -E -u dynqr /app/dynqr
 
