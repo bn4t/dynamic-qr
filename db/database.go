@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"git.bn4t.me/bn4t/dynamic-qr/app/utils"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 )
@@ -11,7 +12,12 @@ var Db *sql.DB
 func Connect() {
 	var err error
 
-	Db, err = sql.Open("sqlite3", "./dynqr.db")
+	execDir, err := utils.GetExecutionDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	Db, err = sql.Open("sqlite3", execDir+"/dynqr.db")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

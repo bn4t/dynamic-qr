@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"html/template"
 	"io"
+	"log"
 )
 
 var server *echo.Echo
@@ -20,21 +21,26 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 func Start() {
 	server = echo.New()
 
+	execDir, err := utils.GetExecutionDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// register web routes
-	RegisterRoutes()
+	RegisterRoutes(execDir)
 
 	t := &Template{
-		templates: template.Must(template.ParseGlob("static/templates/*.html")),
+		templates: template.Must(template.ParseGlob(execDir + "/static/templates/*.html")),
 	}
 	server.Renderer = t
 
 	server.Logger.Fatal(server.Start(":" + utils.Getenv("PORT", "3000")))
 }
 
-func RegisterRoutes() {
+func RegisterRoutes(execDir string) {
 	server.POST("/create-qr", handleCreateQr)
 	server.GET("/manage/:password", handleManage)
 	server.GET("/link/:id", handleLink)
 	server.POST("/update-qr", handleUpdateQr)
-	server.Static("/", "static/public")
+	server.Static("/", execDir+"/static/public")
 }
