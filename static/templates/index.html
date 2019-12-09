@@ -1,13 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Generate a dynamic QR code with a changeable URL. No login required.">
-    <title>DynQR</title>
+{{define "index"}}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Generate a dynamic QR code with a changeable URL. No login required.">
+        <title>DynQR</title>
 
-    <link href="/css/styles.css" rel="stylesheet">
-</head>
+        <link href="/css/styles.css" rel="stylesheet">
+    </head>
 <body>
 
 
@@ -26,6 +27,7 @@
                 <div class="form-group">
                     <label for="target">Target URL</label>
                     <input type="url" id="target" name="target" class="form-control" required>
+                    <input type="hidden" name="csrf" value="{{.Csrf}}" required>
                 </div>
                 <div class="form-group">
                     <button type="submit">Submit</button>
@@ -37,4 +39,5 @@
 
 </body>
 
-</html>
+    </html>
+{{end}}

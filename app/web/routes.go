@@ -7,18 +7,51 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"github.com/satori/go.uuid"
+	"github.com/skip2/go-qrcode"
 	"net/http"
 	"net/url"
 	"strconv"
 )
-import "github.com/skip2/go-qrcode"
 
-type managementData struct {
-	Target   string
-	Password string
-	Id       int
-	QrCode   string
-	Link     string
+// return the index page
+func handleIndexPage(c echo.Context) error {
+	var indexData indexPageData
+	indexData.Csrf = c.Get("csrf").(string)
+
+	return c.Render(http.StatusOK, "index", indexData)
+}
+
+// return the manage page for a QR code
+func handleManagePage(c echo.Context) error {
+	password := c.Param("password")
+
+	// check if target link is supplied
+	if password == "" {
+		return c.String(http.StatusBadRequest, "Bad request.")
+	}
+
+	// retrieve necessary data from database
+	var managementData managementPageData
+	err := db.Db.QueryRow("SELECT target, id, password FROM qrcodes WHERE password=?", password).Scan(&managementData.Target, &managementData.Id, &managementData.Password)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "Invalid management link.")
+	}
+
+	link := utils.GetEnv("BASE_URL", "") + "link/" + strconv.Itoa(managementData.Id)
+	managementData.Link = link
+
+	// create QR code and encode it as base64
+	qrPng, err := qrcode.Encode(link, qrcode.Medium, 256)
+	if err != nil {
+		log.Print(err)
+		return c.String(500, "Internal server error")
+	}
+	managementData.QrCode = base64.StdEncoding.EncodeToString(qrPng)
+
+	// set CSRF token
+	managementData.Csrf = c.Get("csrf").(string)
+
+	return c.Render(http.StatusOK, "manage", managementData)
 }
 
 // create a new dynamic QR code
@@ -94,36 +127,6 @@ func handleUpdateQr(c echo.Context) error {
 
 	// redirect the user to the manage page
 	return c.Redirect(303, "/manage/"+password)
-}
-
-// return the manage page for a QR code
-func handleManage(c echo.Context) error {
-	password := c.Param("password")
-
-	// check if target link is supplied
-	if password == "" {
-		return c.String(http.StatusBadRequest, "Bad request.")
-	}
-
-	// retrieve necessary data from database
-	var managementData managementData
-	err := db.Db.QueryRow("SELECT target, id, password FROM qrcodes WHERE password=?", password).Scan(&managementData.Target, &managementData.Id, &managementData.Password)
-	if err != nil {
-		return c.String(http.StatusBadRequest, "Invalid management link.")
-	}
-
-	link := utils.GetEnv("BASE_URL", "") + "link/" + strconv.Itoa(managementData.Id)
-	managementData.Link = link
-
-	// create QR code and encode it as base64
-	qrPng, err := qrcode.Encode(link, qrcode.Medium, 256)
-	if err != nil {
-		log.Print(err)
-		return c.String(500, "Internal server error")
-	}
-	managementData.QrCode = base64.StdEncoding.EncodeToString(qrPng)
-
-	return c.Render(http.StatusOK, "manage", managementData)
 }
 
 // handle link redirects

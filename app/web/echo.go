@@ -3,16 +3,13 @@ package web
 import (
 	"git.bn4t.me/bn4t/dynamic-qr/app/utils"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"html/template"
 	"io"
 	"log"
 )
 
 var server *echo.Echo
-
-type Template struct {
-	templates *template.Template
-}
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
@@ -28,6 +25,9 @@ func Start() {
 		log.Fatal(err)
 	}
 
+	// use the csrf middleware
+	server.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{TokenLength: 32, TokenLookup: "form:csrf", CookieName: "_csrf", CookieMaxAge: 86400}))
+
 	// register web routes
 	RegisterRoutes(execDir)
 
@@ -42,8 +42,9 @@ func Start() {
 
 func RegisterRoutes(execDir string) {
 	server.POST("/create-qr", handleCreateQr)
-	server.GET("/manage/:password", handleManage)
+	server.GET("/manage/:password", handleManagePage)
 	server.GET("/link/:id", handleLink)
 	server.POST("/update-qr", handleUpdateQr)
+	server.GET("/", handleIndexPage)
 	server.Static("/", execDir+"/static/public")
 }

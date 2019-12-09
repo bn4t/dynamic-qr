@@ -36,8 +36,9 @@
                     <div class="form-group">
                         <label for="target">Set new target URL</label>
                         <input type="url" id="target" name="target" class="form-control" required>
-                        <input type="hidden" name="password" required value="{{.Password}}">
-                        <input type="hidden" name="id" required value="{{.Id}}">
+                        <input type="hidden" name="password" value="{{.Password}}" required>
+                        <input type="hidden" name="id" value="{{.Id}}" required>
+                        <input type="hidden" name="csrf" value="{{.Csrf}}" required>
                     </div>
                     <div class="form-group">
                         <button type="submit">Submit</button>
