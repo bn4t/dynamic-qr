@@ -21,7 +21,7 @@ func Connect() {
 
 	// check if data directory exists and create it if not
 	if !utils.DirExists(execDir + "/data") {
-		err := os.Mkdir(execDir+"/data", 644)
+		err := os.Mkdir(execDir+"/data", 0766)
 		if err != nil {
 			log.Fatal(err)
 		}
