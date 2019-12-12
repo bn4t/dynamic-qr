@@ -26,7 +26,7 @@ func Start() {
 	}
 
 	// use the csrf middleware
-	server.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{TokenLength: 32, TokenLookup: "form:csrf", CookieName: "_csrf", CookieMaxAge: 86400}))
+	server.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{TokenLength: 32, TokenLookup: "form:csrf", CookieName: "_csrf", CookieMaxAge: 86400, CookiePath: "/"}))
 
 	// register web routes
 	RegisterRoutes(execDir)
