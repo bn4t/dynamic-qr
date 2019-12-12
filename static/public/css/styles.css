@@ -87,6 +87,15 @@ button[type=submit] {
     font-size: 15px;
 }
 
+.footer {
+    margin-top: 20px;
+    color: #888888;
+}
+
+.footer > a{
+    color: #1b1e21;
+    text-decoration: none;
+}
 
 /*
 * Fonts
