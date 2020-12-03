@@ -3,6 +3,8 @@ module git.bn4t.me/bn4t/dynamic-qr
 go 1.13
 
 require (
+	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/labstack/echo/v4 v4.1.11
 	github.com/labstack/gommon v0.3.0
