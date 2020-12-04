@@ -1,28 +1,35 @@
 package main
 
 import (
-	"git.bn4t.me/bn4t/dynamic-qr/app/utils"
-	"git.bn4t.me/bn4t/dynamic-qr/app/web"
-	"git.bn4t.me/bn4t/dynamic-qr/db"
-	"github.com/joho/godotenv"
+	"git.bn4t.me/bn4t/dynamic-qr/internal/qrcode"
+	"git.bn4t.me/bn4t/dynamic-qr/internal/router"
+	"git.bn4t.me/bn4t/dynamic-qr/internal/template"
 	"log"
+	"net/http"
+	"time"
 )
 
 func main() {
-
-	if utils.FileExists(".env") {
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatal("Error loading .env file")
-		} else {
-			log.Println("Successfully loaded environment variables")
-		}
+	store, err := qrcode.NewSqliteQrcodeStore("./qrcode.db")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// open the database
-	db.Connect()
+	tmpl, err := template.LoadTemplates("./static/templates/*.html")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// start webserver
-	web.Start()
+	r := router.NewRouter(qrcode.NewQrcodeHandler(store, tmpl), []byte("test"), "./static/public")
+
+	srv := &http.Server{
+		Handler: r,
+		Addr:    "127.0.0.1:8000",
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Fatal(srv.ListenAndServe())
 
 }

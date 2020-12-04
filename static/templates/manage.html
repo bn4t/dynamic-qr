@@ -32,12 +32,10 @@
             <p class="text-centered"><a href="{{.Link}}" target="_blank">{{.Link}}</a></p>
 
             <div class="create-qr-form">
-                <form action="/update-qr" method="post">
+                <form method="post">
                     <div class="form-group">
                         <label for="target">Set new target URL</label>
                         <input type="url" id="target" name="target" class="form-control" required>
-                        <input type="hidden" name="password" value="{{.Password}}" required>
-                        <input type="hidden" name="id" value="{{.Id}}" required>
                         <input type="hidden" name="csrf" value="{{.Csrf}}" required>
                     </div>
                     <div class="form-group">

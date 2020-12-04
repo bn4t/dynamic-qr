@@ -1,7 +1,9 @@
 package qrcode
 
 import (
+	"database/sql"
 	"encoding/base64"
+	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	uuid "github.com/satori/go.uuid"
 	"github.com/skip2/go-qrcode"
@@ -16,10 +18,30 @@ type QrcodeHandler struct {
 	tmpl  *template.Template
 }
 
+func NewQrcodeHandler(store QrcodeStore, tmpl *template.Template) *QrcodeHandler {
+	if tmpl == nil {
+		panic("provided template is nil")
+	}
+	return &QrcodeHandler{
+		store: store,
+		tmpl:  tmpl,
+	}
+}
+
+func (h *QrcodeHandler) Create(w http.ResponseWriter, r *http.Request) {
+	h.tmpl.ExecuteTemplate(w, "index", map[string]string{
+		"Csrf": csrf.Token(r),
+	})
+}
+
 func (h *QrcodeHandler) Manage(w http.ResponseWriter, r *http.Request) {
 	pw := mux.Vars(r)["password"]
 	qr, err := h.store.GetQrcodeByPassword(r.Context(), pw)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "not found", http.StatusNotFound)
+			return
+		}
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
@@ -29,12 +51,18 @@ func (h *QrcodeHandler) Manage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
-	managementData.QrCode = base64.StdEncoding.EncodeToString(qrPng)
 
-	h.tmpl.ExecuteTemplate(w, "manage", nil)
+	tmplData := map[string]string{
+		"QrCode": base64.StdEncoding.EncodeToString(qrPng),
+		"Target": qr.Target,
+		"Link":   "/link/" + strconv.Itoa(qr.Id),
+		"Csrf":   csrf.Token(r),
+	}
+
+	h.tmpl.ExecuteTemplate(w, "manage", tmplData)
 }
 
-func (h *QrcodeHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (h *QrcodeHandler) Store(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "invalid form provided", http.StatusBadRequest)
 		return
