@@ -8,6 +8,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"github.com/skip2/go-qrcode"
 	"html/template"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -43,12 +44,14 @@ func (h *QrcodeHandler) Manage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.Error(w, "internal server error", http.StatusInternalServerError)
+		log.Print(err)
 		return
 	}
 
 	qrPng, err := qrcode.Encode(qr.Target, qrcode.Medium, 256)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
+		log.Print(err)
 		return
 	}
 
@@ -80,6 +83,8 @@ func (h *QrcodeHandler) Store(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.store.NewQrcode(r.Context(), password, targetUri.String()); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
+		log.Print(err)
+		return
 	}
 
 	// redirect to management page
@@ -92,6 +97,7 @@ func (h *QrcodeHandler) Update(w http.ResponseWriter, r *http.Request) {
 	qr, err := h.store.GetQrcodeByPassword(r.Context(), pw)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
+		log.Print(err)
 		return
 	}
 
@@ -110,6 +116,7 @@ func (h *QrcodeHandler) Update(w http.ResponseWriter, r *http.Request) {
 	// update the target url
 	if err := h.store.UpdateTargetUrl(r.Context(), qr.Id, targetUri.String()); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
+		log.Print(err)
 		return
 	}
 
@@ -127,6 +134,7 @@ func (h *QrcodeHandler) Redirect(w http.ResponseWriter, r *http.Request) {
 	qr, err := h.store.GetQrcode(r.Context(), id)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
+		log.Print(err)
 		return
 	}
 

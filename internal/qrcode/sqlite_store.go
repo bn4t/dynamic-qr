@@ -46,7 +46,7 @@ func (s *SqliteQrcodeStore) GetQrcode(ctx context.Context, id int) (Qrcode, erro
 	    target,
 	    password
 	FROM qrcodes WHERE id=?;
-	`, id).Scan(&code.Id, code.Target, code.Password)
+	`, id).Scan(&code.Id, &code.Target, &code.Password)
 
 	return code, err
 }
@@ -60,7 +60,7 @@ func (s *SqliteQrcodeStore) GetQrcodeByPassword(ctx context.Context, password st
 	    target,
 	    password
 	FROM qrcodes WHERE password=?;
-	`, password).Scan(&code.Id, code.Target, code.Password)
+	`, password).Scan(&code.Id, &code.Target, &code.Password)
 
 	return code, err
 }

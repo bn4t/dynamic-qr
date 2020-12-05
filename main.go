@@ -3,7 +3,9 @@ package main
 import (
 	"git.bn4t.me/bn4t/dynamic-qr/internal/qrcode"
 	"git.bn4t.me/bn4t/dynamic-qr/internal/router"
+	_ "git.bn4t.me/bn4t/dynamic-qr/internal/statik"
 	"git.bn4t.me/bn4t/dynamic-qr/internal/template"
+	"github.com/rakyll/statik/fs"
 	"log"
 	"net/http"
 	"time"
@@ -20,7 +22,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	r := router.NewRouter(qrcode.NewQrcodeHandler(store, tmpl), []byte("test"), "./static/public")
+	statikFS, err := fs.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	r := router.NewRouter(qrcode.NewQrcodeHandler(store, tmpl), []byte("test"), statikFS)
 
 	srv := &http.Server{
 		Handler: r,

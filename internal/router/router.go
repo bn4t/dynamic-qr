@@ -7,10 +7,10 @@ import (
 	"net/http"
 )
 
-func NewRouter(qrHandler *qrcode.QrcodeHandler, csrfKey []byte, staticDir string) *mux.Router {
+func NewRouter(qrHandler *qrcode.QrcodeHandler, csrfKey []byte, staticFs http.FileSystem) *mux.Router {
 	r := mux.NewRouter()
 
-	r.Use(csrf.Protect(csrfKey))
+	r.Use(csrf.Protect(csrfKey, csrf.FieldName("csrf")))
 
 	r.HandleFunc("/new-qr", qrHandler.Store).Methods("POST")
 	r.HandleFunc("/manage/{password}", qrHandler.Manage).Methods("GET")
@@ -19,8 +19,7 @@ func NewRouter(qrHandler *qrcode.QrcodeHandler, csrfKey []byte, staticDir string
 	r.HandleFunc("/", qrHandler.Create).Methods("GET")
 
 	// static files
-	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir(staticDir)))
-	r.PathPrefix("/fonts/").Handler(http.FileServer(http.Dir(staticDir)))
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(staticFs)))
 
 	return r
 }
