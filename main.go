@@ -24,6 +24,7 @@ func main() {
 	flag.StringVar(&dbPath, "db", "./qrcodes.db", "Specify the location of the database.")
 	flag.StringVar(&bindAddr, "bind", "127.0.0.1:8080", "Specify the address to bind to.")
 	flag.StringVar(&csrfKey, "csrf", "foo", "The csrf key to be used.")
+	flag.Parse()
 
 	store, err := qrcode.NewSqliteQrcodeStore(dbPath)
 	if err != nil {
