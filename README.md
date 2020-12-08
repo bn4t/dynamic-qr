@@ -2,17 +2,28 @@
 
 *Dynamic QR code generator.*
 
-Generate dynamic QR codes.
+Generate and manage dynamic QR codes.
 
 
-## Setup
+## Compilation
 
+1. Run `go install github.com/rakyll/statik`
+2. `make build`
+3. Run the binary
 
-1. Clone the repository and enter the directory: `git clone https://git.bn4t.me/bn4t/dynamic-qr.git
- && cd dynamic-qr`
-2. Edit the environment variables in `docker-compose.yml`
-3. Build the image and start the container: `docker-compose up --build -d`
+## Usage
+```text
+Usage of ./dynamic-qr:
+  -bind string
+        Specify the address to bind to. (default "127.0.0.1:8080")
+  -csrf string
+        The csrf key to be used. (default "foo")
+  -db string
+        Specify the location of the database. (default "./qrcodes.db")
+```
 
+## Screenshot
+![Screenshot](screenshot.png)
 
 ## License
 
