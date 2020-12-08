@@ -22,6 +22,9 @@ Usage of ./dynamic-qr:
         Specify the location of the database. (default "./qrcodes.db")
 ```
 
+## Screenshot
+![Screenshot](screenshot.png)
+
 ## License
 
 GPLv3
