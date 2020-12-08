@@ -48,7 +48,7 @@ func (h *QrcodeHandler) Manage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	qrPng, err := qrcode.Encode(qr.Target, qrcode.Medium, 256)
+	qrPng, err := qrcode.Encode(r.Host+"/link/"+strconv.Itoa(qr.Id), qrcode.Medium, 256)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		log.Print(err)

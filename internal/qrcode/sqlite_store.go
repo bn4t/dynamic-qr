@@ -76,3 +76,7 @@ func (s *SqliteQrcodeStore) UpdateTargetUrl(ctx context.Context, id int, newTarg
 
 	return err
 }
+
+func (s *SqliteQrcodeStore) Close() error {
+	return s.db.Close()
+}

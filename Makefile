@@ -21,7 +21,7 @@ RM?=rm -f # Exists in GNUMake but not in NetBSD make and others.
 all: build
 
 build:
-	$(STATIK) -src="./static/public/" -dest="internal/" -p="statik"
+	$(STATIK) -f -src="./static/" -dest="internal/" -p="statik"
 	$(GO) build $(GOFLAGS) -o dynamic-qr .
 
 run: build

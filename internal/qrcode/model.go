@@ -13,4 +13,5 @@ type QrcodeStore interface {
 	GetQrcode(ctx context.Context, id int) (Qrcode, error)
 	GetQrcodeByPassword(ctx context.Context, password string) (Qrcode, error)
 	UpdateTargetUrl(ctx context.Context, id int, newTargetUrl string) error
+	Close() error
 }

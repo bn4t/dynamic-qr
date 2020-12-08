@@ -19,7 +19,7 @@ func NewRouter(qrHandler *qrcode.QrcodeHandler, csrfKey []byte, staticFs http.Fi
 	r.HandleFunc("/", qrHandler.Create).Methods("GET")
 
 	// static files
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(staticFs)))
+	r.PathPrefix("/public/").Handler(http.FileServer(staticFs))
 
 	return r
 }
