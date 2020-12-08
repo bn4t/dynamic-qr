@@ -1,4 +1,4 @@
-module git.bn4t.me/bn4t/dynamic-qr
+module github.com/bn4t/dynamic-qr
 
 go 1.13
 
