@@ -1,7 +1,7 @@
 package router
 
 import (
-	"git.bn4t.me/bn4t/dynamic-qr/internal/qrcode"
+	"github.com/bn4t/dynamic-qr/internal/qrcode"
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"net/http"
